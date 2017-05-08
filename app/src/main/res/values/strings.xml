@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">PhotoShare</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="login">LOGIN</string>
+    <string name="sing_up">SING UP</string>
+    <string name="enter_email">Enter Email</string>
+</resources>

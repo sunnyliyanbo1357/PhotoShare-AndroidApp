@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "694624640706",
+    "firebase_url": "https://photoshare-95321.firebaseio.com",
+    "project_id": "photoshare-95321",
+    "storage_bucket": "photoshare-95321.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:694624640706:android:a41672f9f3720bcb",
+        "android_client_info": {
+          "package_name": "com.yeehan.yanboli.photoshare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "694624640706-uqm0nalbl7p0phhptoi8b78tpj6sohnm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yeehan.yanboli.photoshare",
+            "certificate_hash": "df83460d7e4835510a87ea9138ca7e05d6a202fb"
+          }
+        },
+        {
+          "client_id": "694624640706-b0rcf6d246ucujue1d439fh7i50lsjp0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXHf2KG9uQdmv7YO7vVrLeelXmWbPbTGQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "694624640706-b0rcf6d246ucujue1d439fh7i50lsjp0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
