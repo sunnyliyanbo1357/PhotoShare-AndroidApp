@@ -61,17 +61,20 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/already_have_an_account"
-        tools:layout_editor_absoluteX="111dp"
-        tools:ignore="MissingConstraints"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/moveToLogin_button" />
+        android:layout_marginBottom="10dp"
+        android:text="@string/already_have_a_photoshare_account"
+        app:layout_constraintBottom_toTopOf="@+id/moveToLogin_button"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:ignore="MissingConstraints" />
 
-    <android.support.constraint.Guideline
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/guideline3"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp" />
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

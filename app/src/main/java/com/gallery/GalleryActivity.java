@@ -56,6 +56,7 @@ public class GalleryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
+                FirebaseAuth.getInstance().signOut();
                 finish();
                 startActivity(new Intent(GalleryActivity.this, MainActivity.class));
             }

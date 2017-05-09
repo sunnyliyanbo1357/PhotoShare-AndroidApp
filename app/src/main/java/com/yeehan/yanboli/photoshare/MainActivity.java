@@ -12,14 +12,26 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.gallery.GalleryActivity;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.loginpack.LoginActivity;
 
-public class MainActivity extends AppCompatActivity {
+// public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity implements
+    GoogleApiClient.OnConnectionFailedListener {
+//    View.OnClickListener{
 
     //UI Elements
     private EditText mEmailField, mPasswordField;
@@ -28,9 +40,16 @@ public class MainActivity extends AppCompatActivity {
     //Authentication
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private GoogleApiClient mGoogleApiClient;
 
     //Log
     private static final String TAG = "MainActivity";
+    private static final int RC_SIGN_IN = 9001;
+
+    @Override
+    public void onConnectionFailed(ConnectionResult result) {
+        return;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         mPasswordField = (EditText) findViewById(R.id.password_field);
         mRegisterButton = (Button) findViewById(R.id.register_button);
         mMoveToLoginButton = (Button) findViewById(R.id.moveToLogin_button);
+//        findViewById(R.id.sign_in_button).setOnClickListener(this);
 
         //Authentication Assign Instances
         mAuth = FirebaseAuth.getInstance();
@@ -60,6 +80,36 @@ public class MainActivity extends AppCompatActivity {
                 // ...
             }
         };
+
+
+        //----------------Google Sign In-------------------------------------------------------------
+        Log.d(TAG, "Google Sign In config start");
+        //Configure Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        // Build a GoogleApiClient with access to the Google Sign-In API and the
+        // options specified by gso.
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this , this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+        //OnClick Google Sign in
+        findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+            }
+        });
+
+
+        Log.d(TAG, "Google Sign In config ends");
+
+        //-------------------Google Sign In End----------------------------------------------------------
 
 
         //On Click Listeners
@@ -88,8 +138,6 @@ public class MainActivity extends AppCompatActivity {
                                         Toast.makeText(MainActivity.this, "User Account Created", Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(MainActivity.this, GalleryActivity.class));
                                     }
-
-                                    // ...
                                 }
                             });
                 }
@@ -102,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public  void  onClick(View v){
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
-
             }
         });
 
@@ -121,4 +168,44 @@ public class MainActivity extends AppCompatActivity {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+//            handleSignInResult(result);
+            if (result.isSuccess()){
+                GoogleSignInAccount account = result.getSignInAccount();
+                firebaseAuthWithGoogle(account);
+            }
+
+        }
+    }
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        Toast.makeText(MainActivity.this, "Welcome " + acct.getDisplayName(), Toast.LENGTH_SHORT).show();
+
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
+//                        String name = getdata();
+
+                        if (task.isSuccessful()){
+                            startActivity(new Intent(MainActivity.this, GalleryActivity.class));
+                        }else {
+                            Toast.makeText(MainActivity.this,"Something went wrong",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
+
 }

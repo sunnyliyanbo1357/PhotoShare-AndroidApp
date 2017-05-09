@@ -12,6 +12,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.gallery.GalleryActivity;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -64,6 +67,7 @@ public class LoginActivity extends AppCompatActivity {
                 // ...
             }
         };
+
 
         //On Click Listeners
         mLoginButton.setOnClickListener(new View.OnClickListener(){
