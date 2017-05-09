@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity implements
     private static final int RC_SIGN_IN = 9001;
 
     @Override
-    public void onConnectionFailed(ConnectionResult result) {
-        return;
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 
     @Override
